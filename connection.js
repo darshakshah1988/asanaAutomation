@@ -1,10 +1,12 @@
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'asana_node' 
+  host     : '2.57.89.16',
+  user     : 'u266860147_asana',
+  password : 'Asana@2020',
+  database : 'u266860147_asanaAuto' 
 });
+
+// local setup asana_node 
 
 connection.connect(function(err) {
   if (err) {
