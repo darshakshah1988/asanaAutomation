@@ -1,0 +1,111 @@
+<aside class="left-sidebar">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <!-- User Profile-->
+                <li>
+                    <!-- User Profile-->
+                    <div class="user-profile text-center dropdown p-3">
+                        <div class="user-pic"><img src="<%= photo %>" alt="users" class="rounded-circle userphoto" width="50" /></div>
+                        <div class="user-content hide-menu">
+                            <a href="javascript:void(0)" class="mt-2" id="Userdd" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <h5 class="mb-0 user-name mt-2 personName"><%= name %><i class="fa fa-angle-down"></i></h5>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-left" aria-labelledby="Userdd">
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End User Profile-->
+                </li>
+                <% if(route == 'dashboard') { %>
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                        <i class="mdi mdi-av-timer"></i>
+                        <span class="hide-menu">Users</span> 
+                        <span class="badge badge-inverse badge-pill ml-auto mr-3 font-medium px-2 py-1 totalUsersBadge"><%= users.data.length %></span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse  first-level users">
+                        <% for(const user of users.data) { %>
+                            
+                        <li class="sidebar-item">
+                            <div class='sidebar-link waves-effect waves-dark' id='<%= user.gid  %>'>
+                                <a href="/users/<%= user.gid  %>" class='link'>
+                                <!-- <img src="/assets/images/users/default.png" alt="user" class="rounded-circle" width="25"> -->
+                                <% if(user.photo) { %>
+                                <img src='<%= user.photo["image_21x21"] %>' alt="user" class="rounded-circle" width="25" />
+                                &nbsp;<span class="hide-menu"> <%= user.name  %> </span>
+                                <% } else {%>
+                                <img src='/assets/images/users/default.png' alt="user" class="rounded-circle" width="25" />
+                                &nbsp;<span class="hide-menu"> <%= user.name %> </span>
+                                <% } %>
+                                </a>
+                                <a href='javascript:void(0)' id='<%= user.gid %>#<%= gid %>#<%= user.name  %>' class="badge badge-danger badge-pill ml-auto mr-3 font-medium px-2 py-1 badgeCon">X</a>
+                            </div>
+                            
+                        </li> 
+                        <% } %>                               
+                    </ul>
+                </li>                
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                        <i class="mdi mdi-av-timer"></i>
+                        <span class="hide-menu">Blocked Users</span> 
+                        <span class="badge badge-inverse badge-pill ml-auto mr-3 font-medium px-2 py-1 totalbUsersBadge"><%= blocked.length %></span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse  first-level busers">
+                        
+                        <% for(const buser of blocked) { %>
+                            
+                        <li class="sidebar-item">
+                            <div class='sidebar-link waves-effect waves-dark' id='<%= buser.gid  %>'>
+                                <a href="javascript:void(0)" class='link'>
+                                <% if(buser.photo) { %>
+                                <img src='<%= user.photo["image_21x21"] %>' alt="user" class="rounded-circle" width="25" />
+                                &nbsp;<span class="hide-menu" > <%= buser.name  %> </span>
+                                <% } else {%>
+                                <img src='/assets/images/users/default.png' alt="user" class="rounded-circle" width="25" />
+                                &nbsp;<span class="hide-menu" > <%= buser.name %> </span>
+                                <% } %>
+                                </a>
+                                <a href='javascript:void(0)' id='<%= buser.gid %>#<%= buser.ugid %>#<%= buser.name %>' class="badge badge-danger badge-pill ml-auto mr-3 font-medium px-2 py-1 badgeCon2">X</a>
+                            </div>
+                            
+                        </li> 
+                        <% } %>
+                                                      
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark" href="javascript:void(0)">
+                        <i class="mdi mdi-av-timer"></i>
+                        <span class="hide-menu">Reports</span> 
+                        <span class="badge badge-success badge-pill ml-3 mr-1 font-medium px-2 py-1 complete"></span>
+                        <span class="badge badge-danger badge-pill ml-1 mr-1 font-medium px-2 py-1 incomplete"></span>
+                    </a>
+                </li>
+                <% } else if(route == "tasks") { %> 
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark" href="javascript:void(0)">
+                            <i class="mdi mdi-av-timer"></i>
+                            <span class="hide-menu">Tasks I've Created</span> 
+                            <span class="badge badge-success badge-pill ml-3 mr-1 font-medium px-2 py-1 complete"></span>
+                            <span class="badge badge-danger badge-pill ml-1 mr-1 font-medium px-2 py-1 incomplete"></span>
+                        </a>
+                    </li>
+                       
+                <% } %>
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>

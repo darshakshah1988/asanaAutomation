@@ -1,0 +1,275 @@
+<!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- apps -->
+    <script src="/dist/js/app.min.js"></script>
+    <script src="/dist/js/app.init.minimal.js"></script>
+    <script src="/dist/js/app-style-switcher.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="/dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="/dist/js/sidebarmenu.js"></script>
+    <!-- This Page JS -->
+    <script src="/assets/libs/chartist/dist/chartist.min.js"></script>
+    <script src="/dist/js/pages/chartist/chartist-plugin-tooltip.js"></script>
+    <!-- Morris Js -->
+    <script src="/assets/libs/raphael/raphael.min.js"></script>
+    <script src="/assets/libs/morris.js/morris.min.js"></script>
+    <!-- Animated skill bar -->
+    <script src="/assets/libs/gaugeJS/dist/gauge.min.js"></script>
+    <script src="/dist/js/pages/dashboards/dashboard5.js"></script>
+    <script src="/dist/js/custom.min.js"></script>                                                                   
+    <script src="/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/dist/js/pages/datatable/datatable-api.init.js"></script>
+    <script src='https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js'></script>
+    <script src='https://ampleadmin.wrappixel.com/assets/libs/bootstrap-table/dist/bootstrap-table.min.js'></script>
+    <script src="https://ampleadmin.wrappixel.com/dist/js/pages/tables/bootstrap-table.init.js"></script>
+    <script src='https://ampleadmin.wrappixel.com/assets/libs/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js'></script>
+    <script src='https://ampleadmin.wrappixel.com/assets/libs/bootstrap-table/dist/bootstrap-table-locale-all.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js" integrity="sha256-zG8v+NWiZxmjNi+CvUYnZwKtHzFtdO8cAKUIdB8+U9I=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).on('click', ".badgeCon" ,function() {
+            var ugid = this.id.split('#');
+
+            $.ajax({
+                type:"POST",
+                data: {gid: ugid[1], ugid: ugid[0], name: ugid[2]},
+                url: '/sidebar/user/remove/',
+                success: function(res) {
+                    alert(res);
+                    $("#"+ugid[0]+" a.link").attr("href","#");
+                    $("#"+ugid[0]+" a.badge").removeClass('badgeCon');
+                    $("#"+ugid[0]+" a.badge").addClass('badgeCon2');
+
+                    var el1 = $("#"+ugid[0]).parent("li").html();
+                    $("#"+ugid[0]).parent("li").html("");
+                    $('.busers').append('<li class="sidebar-item">'+el1+'</li>');
+                    var count = $(".totalUsersBadge").text();
+                    var bcount = $(".totalbUsersBadge").text();
+                    $(".totalUsersBadge").text(count - 1);
+                    $(".totalbUsersBadge").text((bcount*1) + 1);
+                },
+                error: function(error) {
+                    console.log(error)
+                }
+            })       
+            
+        });
+        
+        $(document).on('click', '.badgeCon2', function() {
+            var ugid = this.id.split('#');
+            //alert(ugid);
+            $.ajax({
+                type:"POST",
+                data: {gid: ugid[1], ugid: ugid[0], name: ugid[2]},
+                url: '/sidebar/buser/remove/',
+                success: function(res) {
+                    //console.log(res);
+                    alert(res);
+                    $("#"+ugid[0]+" a.link").attr("href","/users/"+ugid[0]);
+                    $("#"+ugid[0]+" a.badge").removeClass('badgeCon2');
+                    $("#"+ugid[0]+" a.badge").addClass('badgeCon');
+                    var el1 = $("#"+ugid[0]).parent("li").html();
+                    $("#"+ugid[0]).parent("li").html("");
+                    $('.users').append('<li class="sidebar-item">'+el1+'</li>');
+                    var count = $(".totalUsersBadge").text();
+                    var bcount = $(".totalbUsersBadge").text();
+                    $(".totalbUsersBadge").text(bcount - 1);
+                    $(".totalUsersBadge").text((count*1) + 1);
+                },
+                error: function(error) {
+                    console.log(error)
+                }
+            })           
+            
+        });
+
+        $(document).ready(function() {
+            const queryString = window.location.search;
+            
+            
+        
+        });
+
+   
+        
+    </script>
+
+    <% if(route == "tasks") { %>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+        <script src='https://cdn.datatables.net/datetime/1.0.3/js/dataTables.dateTime.min.js'></script>
+        <script src='//cdn.datatables.net/plug-ins/1.10.24/api/fnFilterClear.js'></script>
+        
+        <script>
+        var minDate, maxDate;
+
+        $.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var min = minDate.val();
+        var max = maxDate.val();
+        var date = new Date( data[4] );
+ 
+        if (
+            ( min === null && max === null ) ||
+            ( min === null && date <= max ) ||
+            ( min <= date   && max === null ) ||
+            ( min <= date   && date <= max )
+        ) {
+            return true;
+        }
+        return false;
+    }
+);
+            
+        $(document).ready(function() {
+            // Create date inputs
+            minDate = new DateTime($('#min'), {
+                format: 'MMMM Do YYYY'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'MMMM Do YYYY'
+            });
+        
+            // DataTables initialisation
+            // var table = $('#example').DataTable();
+            var ud = $('.userId').text();
+            $('#example').DataTable( {
+                //"processing": true,
+                "pageLength": 100,
+                "ajax": '/tasks/'+ud,
+                "columns": [
+                    { "data": "id" },
+                    { "data": "name" },
+                    { "data": "assignee_status" },
+                    { "data": "status" },
+                    { "data": "created" },
+                    { "data": "action" }
+                ]
+            });
+
+            
+        
+            // Refilter the table
+            $('#min, #max').on('change', function () {
+              // $(".search").on('click',function() {
+                  // alert("filtering");  
+                var min = $("#min").val();
+                var max = $("#max").val();
+                //alert(min +"=>"+max);
+                if(min == '' && max == '')
+                {
+                    $('#example').DataTable().fnReloadAjax('/tasks/'+ud);
+                }
+                else{
+                    $('#example').DataTable().draw();
+                }
+              });
+
+
+            // $(document).on("click",".resetDf",function() {
+            //     $('#min').val('');
+            //     $('#max').val('');
+            //     $('#example').DataTable().ajax.reload();
+            // });
+
+            
+
+
+
+            
+        } );
+
+        $(document).on('click', '.viewlead', function() {
+            alert("View this lead"+this.id);
+        });
+
+        $(document).on('click','.infolead', function() {
+            var id = this.id;
+            $.ajax({
+                type:"GET",
+                data:{id: id},
+                url:"/taskDetails/"+id,
+                success:function(res) {
+                   var prev = '';
+                   var st = '';
+                   var i = 1;
+                   
+                   res.forEach(e => {
+                        if(i == 1)
+                        {
+                        
+                        st = "<p>"+e.text+" by "+e.created_by['name']+"</p>";
+                        prev = st;
+                        }
+                        else {
+                            st = "<p>"+prev +" <br> "+e.text+" by "+e.created_by['name']+"</p>";
+                            prev = st;
+                        }
+                        i++;
+                   });
+
+                   $('.longModalBody').html(st);
+                },
+                error:function(error) {
+                    alert("error");
+                }
+            })
+        });
+
+        $(document).on('click','.today', function() {
+            var today = moment().format("MMMM Do YYYY");
+            $("#min").val(today);
+            $("#max").val(today);
+            //$('#example').DataTable().fnReloadAjax('/tasks/'+ud);
+            $("#example td").each(function() {
+                //console.log(this);
+                var cl = $(this).attr("class");
+                $(cl).parent("tr").hide();
+                    //this.parent('tbody tr').hide();
+                
+
+            })
+        });
+
+        $(document).on('click','.yesterday',function() {
+            var yesterday = moment().subtract(1, 'days').format("MMMM Do YYYY");
+            $("#min").val(yesterday);
+            $("#max").val(yesterday);
+            $('#example').DataTable().fnReloadAjax('/tasks/'+ud);
+            
+        });
+
+        function performAc() {
+           // $('#min, #max').change();
+                var min = $("#min").val();
+                var max = $("#max").val();
+                //alert(min +"=>"+max);
+                if(min == '' && max == '')
+                {
+                    $('#example').DataTable().fnReloadAjax('/tasks/'+ud);
+                }
+                else{
+                    $('#example').DataTable().draw();
+                }
+        }
+
+        
+        
+
+
+        
+        </script>
+
+    <% } %>
+
+    
+</html>
+
